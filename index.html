@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHANNI PHONE SHOP</title>
+<style>
+:root{--bg:#07111f;--card:#101d2d;--accent:#13a8ff;--text:#f5f8fc;--muted:#9eafc3}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#07111f,#0d1c2c);color:var(--text)}
+header{padding:22px 18px 18px;text-align:center;position:sticky;top:0;background:rgba(7,17,31,.94);backdrop-filter:blur(10px);z-index:5;border-bottom:1px solid #203047}
+.logo{font-size:30px;font-weight:900;letter-spacing:2px}.tag{color:var(--accent);font-size:13px;margin-top:5px}
+.hero{padding:38px 18px 25px;text-align:center}.hero h1{font-size:34px;margin:0 0 10px}.hero p{color:var(--muted);margin:0 auto 22px;max-width:650px;line-height:1.5}
+.btn{display:inline-block;background:var(--accent);color:white;text-decoration:none;border:0;border-radius:14px;padding:13px 20px;font-weight:700;font-size:16px;cursor:pointer}
+section{max-width:1050px;margin:auto;padding:20px 18px 45px}h2{font-size:25px;margin:0 0 18px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid #24364c;border-radius:20px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.2)}
+.photo{height:220px;background:#15263a;display:flex;align-items:center;justify-content:center;overflow:hidden}.photo img{width:100%;height:100%;object-fit:contain}
+.info{padding:17px}.name{font-size:19px;font-weight:800}.price{color:#67c7ff;font-size:20px;font-weight:800;margin:8px 0 13px}
+.small{color:var(--muted);font-size:13px;line-height:1.45}.edit{margin-top:13px;width:100%;background:#1b2d42;color:white;border:1px solid #38506b;border-radius:11px;padding:10px;cursor:pointer}
+.contact{background:#0e2032;border:1px solid #29445f;border-radius:24px;padding:24px;text-align:center}.phone{font-size:27px;font-weight:900;color:#67c7ff;letter-spacing:1px;margin:10px 0}
+.qr{max-width:300px;width:100%;border-radius:18px;margin:18px auto 8px;display:block}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+footer{text-align:center;padding:28px 15px;color:#71869d;border-top:1px solid #203047;font-size:13px}
+@media(max-width:500px){.hero h1{font-size:29px}.photo{height:200px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">CHANNI PHONE SHOP</div>
+  <div class="tag">SMARTPHONES • QUALITY • SERVICE</div>
+</header>
+
+<div class="hero">
+  <h1>Your Next Phone Starts Here</h1>
+  <p>Welcome to Channi Phone Shop. Product images and details can be changed directly from this page whenever you have new phones.</p>
+  <a class="btn" href="#products">View Products</a>
+</div>
+
+<section id="products">
+  <h2>Featured Phones</h2>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<section>
+  <div class="contact">
+    <h2>Contact Channi</h2>
+    <div class="phone">086 619 577</div>
+    <div class="small">Call or message us for product information and availability.</div>
+    <img class="qr" src="telegram-qr.jpg" alt="Telegram QR code">
+    <a class="btn" href="tel:086619577">Call Now</a>
+    <div class="note">Product photos are saved in your browser when you use the Change Photo button.</div>
+  </div>
+</section>
+
+<footer>© 2026 Channi Phone Shop • All rights reserved.</footer>
+
+<script>
+const defaults = [
+  {name:"iPhone 17 Pro Max",price:"Contact for price",note:"New flagship smartphone"},
+  {name:"Samsung Galaxy S27 Ultra",price:"Contact for price",note:"Premium Android flagship"},
+  {name:"Google Pixel",price:"Contact for price",note:"Clean Android experience"},
+  {name:"Xiaomi Pro Series",price:"Contact for price",note:"High-performance smartphone"},
+  {name:"Vivo X Series",price:"Contact for price",note:"Powerful camera smartphone"},
+  {name:"More Phones Coming Soon",price:"Contact for price",note:"This product can be replaced anytime"}
+];
+
+function getImg(i){
+  return localStorage.getItem("channi_img_"+i) || "";
+}
+function saveImg(i,data){
+  localStorage.setItem("channi_img_"+i,data);
+}
+function render(){
+  const grid=document.getElementById("productGrid");
+  grid.innerHTML="";
+  defaults.forEach((p,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    const image=getImg(i);
+    card.innerHTML=`
+      <div class="photo">
+        ${image ? `<img src="${image}" alt="${p.name}">` : `<div style="text-align:center;color:#7890a8;padding:20px"><div style="font-size:50px">📱</div><div>No photo yet</div></div>`}
+      </div>
+      <div class="info">
+        <div class="name">${p.name}</div>
+        <div class="price">${p.price}</div>
+        <div class="small">${p.note}</div>
+        <button class="edit" onclick="changePhoto(${i})">Change Photo</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+function changePhoto(i){
+  const input=document.createElement("input");
+  input.type="file"; input.accept="image/*";
+  input.onchange=()=>{
+    const file=input.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{saveImg(i,reader.result);render();};
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+render();
+</script>
+</body>
+</html>
