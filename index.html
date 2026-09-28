@@ -55,7 +55,7 @@ footer{text-align:center;padding:28px 15px;color:#71869d;border-top:1px solid #2
 
 <script>
 const defaults = [
-  {name:"iPhone",price:"1Contact for price",note:"New flagship smartphone"},
+  {name:"OnePlus 11",price:"$100",note:"New smartphone",image:"file_0000000057b0820791d077f0cd265800.png"},
   {name:"Android",price:"Contact for price",note:"Premium Android flagship"},
   {name:"laptop",price:"Contact for price",note:"Clean Android experience"},
   {name:"PC Series",price:"Contact for price",note:"High-performance smartphone"},
@@ -70,7 +70,7 @@ function saveImg(i,data){
   localStorage.setItem("channi_img_"+i,data);
 }
 function render(){
-  const grid=document.getElementById("productGrid");
+  const image=getImg(i) || p.image || "";;
   grid.innerHTML="";
   defaults.forEach((p,i)=>{
     const card=document.createElement("div");
